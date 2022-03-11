@@ -1,28 +1,33 @@
-﻿namespace Day09Demo.AssignmentSample.Utility
+﻿namespace Day09Demo.AssignmentSample.Utility;
+
+public static class ConsoleTextColor
 {
-    public static class ConsoleTextColor
+    public static void SetError()
     {
-        public static void SetError()
-        {
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.BackgroundColor = ConsoleColor.Red;
-        }
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.BackgroundColor = ConsoleColor.Red;
+    }
 
-        public static void SetWarning() 
-        {
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.BackgroundColor = ConsoleColor.Yellow;
-        }
+    public static void SetWarning()
+    {
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.BackgroundColor = ConsoleColor.Yellow;
+    }
 
-        public static void Reset()
-        {
-            Console.ResetColor();
-        }
+    public static void Reset()
+    {
+        Console.ResetColor();
+    }
 
-        public static void SetHighlight()
-        {
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.BackgroundColor = ConsoleColor.Cyan;
-        }
+    public static void SetHighlight()
+    {
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.BackgroundColor = ConsoleColor.Cyan;
+    }
+
+    public static void SetColor(ConsoleColor foreColor, ConsoleColor backColor)
+    {
+        Console.ForegroundColor = foreColor;
+        //Console.BackgroundColor = backColor;
     }
 }

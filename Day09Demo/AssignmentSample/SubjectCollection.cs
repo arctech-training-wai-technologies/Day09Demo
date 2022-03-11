@@ -1,8 +1,9 @@
-﻿using Day09Demo.AssignmentSample;
+﻿using System.Diagnostics;
+using Day09Demo.AssignmentSample.Models;
 using Day09Demo.AssignmentSample.Utility;
 
-namespace Day09Demo;
-public class SubjectCollection : ISubjectCollection
+namespace Day09Demo.AssignmentSample;
+public class SubjectCollection
 {
     private readonly List<Subject> _subjects = new();
 
@@ -13,9 +14,7 @@ public class SubjectCollection : ISubjectCollection
 
     public void AddSubject()
     {
-        Console.WriteLine("--------------");
-        Console.WriteLine("Add new Subject");
-        Console.WriteLine("--------------");
+        ConsoleMessage.ShowFormTitle("Add new Subject", 15);
 
         var subject = Subject.CreateFromConsoleRead();
 
@@ -24,28 +23,29 @@ public class SubjectCollection : ISubjectCollection
 
     public virtual void DisplayAll()
     {
-        ShowReport(_subjects, "Subject Listing");
+        ShowReport(_subjects, " S U B J E C T    L I S T I N G");
     }
 
     public virtual void DisplayAny()
     {
         ConsoleMessage.ShowFormTitle("Search Subject", 25);
-
         var subjectSearchText = ConsoleMessage.ReadLine<string>("Enter a Subject name or subject code to search");
 
-        int.TryParse(subjectSearchText, out int codeEntered);
+        Debug.Assert(subjectSearchText != null, "subjectSearchText != null");
 
+        int.TryParse(subjectSearchText, out var codeEntered);
         var subjectsFound = _subjects.Where(s => s.Name.Contains(subjectSearchText) || s.Code == codeEntered).ToList();
 
-        subjectsFound.ForEach(s => s.Display());
+        //subjectsFound.ForEach(s => s.Display());
+
+        ShowReport(subjectsFound, "S U B J E C T   S E A R C H   R E S U L T");
     }
 
     public virtual void Edit()
     {
         ConsoleMessage.ShowFormTitle("Edit Subject");
 
-        var subjectCode = ConsoleMessage.ReadLine<int>("Enter subject code to update: ");
-
+        var subjectCode = ConsoleMessage.ReadLine<int>("Enter subject code to update");
         var subjectFound = _subjects.SingleOrDefault(s => s.Code == subjectCode);
 
         if (subjectFound == null)
@@ -56,9 +56,9 @@ public class SubjectCollection : ISubjectCollection
 
         ConsoleMessage.ShowSubTitle("Existing Subject Data is");
         subjectFound.Display();
-
+        
         ConsoleMessage.ShowSubTitle("Enter new Subject Data:");
-        Subject newSubject = Subject.CreateFromConsoleRead();
+        var newSubject = Subject.CreateFromConsoleRead();
 
         subjectFound.Code = newSubject.Code;
         subjectFound.Name = newSubject.Name;
@@ -67,20 +67,17 @@ public class SubjectCollection : ISubjectCollection
         subjectFound.StartDate = newSubject.StartDate;
     }
 
-    public virtual void ShowReport(List<Subject> subjects, string header)
+    protected virtual void ShowReport(List<Subject> subjects, string header)
     {
-        ConsoleMessage.ShowReportTitle(header, 70);
-        Console.WriteLine("|Name           |Description              |Fees      |Start Date     |");
-        Console.WriteLine("----------------------------------------------------------------------");
+        var consoleReport = new ConsoleReport(Subject.HeaderText, 5);
 
-        foreach (var Subject in subjects)
+        consoleReport.ShowReportTitle(header);
+
+        consoleReport.DisplayHeader();
+
+        foreach (var subject in subjects)
         {
-            var displayName = Subject.Name.Left(15);
-            var displayDescription = Subject.Name.Left(15);
-            
-            Console.WriteLine($"|{displayName,-15}|{displayDescription,-25}|{Subject.CourseFee,10:N}|{Subject.StartDate,-15:dd-MMM-yyyy}|");
+            consoleReport.DisplayRecord(subject, true);
         }
-
-        Console.WriteLine("----------------------------------------------------------------------");
     }
 }
