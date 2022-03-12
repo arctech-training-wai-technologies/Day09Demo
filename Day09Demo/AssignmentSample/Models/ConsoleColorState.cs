@@ -1,24 +1,24 @@
 ﻿namespace Day09Demo.AssignmentSample.Models;
 
-public struct ConsoleColorState
+public readonly struct ConsoleColorState
 {
-    public readonly ConsoleColor Foreground;
-    public readonly ConsoleColor Background;
+    private readonly ConsoleColor _foreground;
+    private readonly ConsoleColor _background;
 
     public ConsoleColorState(ConsoleColor foreground, ConsoleColor background)
     {
-        Foreground = foreground;
-        Background = background;
+        _foreground = foreground;
+        _background = background;
     }
 
-    public void Reset()
+    public static void Reset()
     {
         Console.ResetColor();
     }
 
     public void Set()
     {
-        Console.ForegroundColor = Foreground;
-        Console.BackgroundColor = Background;
+        Console.ForegroundColor = _foreground;
+        Console.BackgroundColor = _background;
     }
 }

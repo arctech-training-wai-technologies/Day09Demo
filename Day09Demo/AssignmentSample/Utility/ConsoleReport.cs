@@ -8,7 +8,6 @@ public class ConsoleReport : IOffset
     private readonly string _headerText;
     private readonly string _line;
     private readonly int _offset;
-    private readonly string _offsetText;
     public int Width { get; }
 
     private ConsoleColorState _recordColorState, _headerColorState;
@@ -18,7 +17,6 @@ public class ConsoleReport : IOffset
         _headerText = headerText;
         Width = headerText.Length;
         _offset = offset;
-        _offsetText = new string(' ', offset);
         _line = new string(lineCharacter, Width);
 
         _recordColorState = new ConsoleColorState(ConsoleColor.Black, ConsoleColor.Cyan);
@@ -44,7 +42,7 @@ public class ConsoleReport : IOffset
         Console.WriteLine(_headerText);
         DisplayLine();
 
-        _headerColorState.Reset();
+        ConsoleColorState.Reset();
     }
 
     public void DisplayRecord(IReportable reportable, bool displayTopLine = false)
@@ -58,7 +56,7 @@ public class ConsoleReport : IOffset
         Console.WriteLine(reportable.RecordText);
         DisplayLine();
 
-        _recordColorState.Reset();
+        ConsoleColorState.Reset();
     }
 
     public void DisplayLine()
@@ -69,7 +67,8 @@ public class ConsoleReport : IOffset
 
     public void Adjust()
     {
-        Console.Write(_offsetText);
+        var (left, top) = Console.GetCursorPosition();
+        Console.SetCursorPosition(left + _offset, top);
     }
 
     public void ShowReportTitle(string header)
@@ -78,7 +77,7 @@ public class ConsoleReport : IOffset
 
         ConsoleMessage.ShowReportTitle(header, this, Width);
 
-        _headerColorState.Reset();
+        ConsoleColorState.Reset();
     }
 
     public static void DisplaySingleRecordReport(string headerText, IReportable reportable)

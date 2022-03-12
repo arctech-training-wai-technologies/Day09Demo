@@ -24,10 +24,4 @@ public static class ConsoleTextColor
         Console.ForegroundColor = ConsoleColor.White;
         Console.BackgroundColor = ConsoleColor.Cyan;
     }
-
-    public static void SetColor(ConsoleColor foreColor, ConsoleColor backColor)
-    {
-        Console.ForegroundColor = foreColor;
-        //Console.BackgroundColor = backColor;
-    }
 }

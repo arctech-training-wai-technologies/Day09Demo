@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using Day09Demo.AssignmentSample.Exceptions;
 using Day09Demo.AssignmentSample.Interfaces;
 using Day09Demo.AssignmentSample.Utility;
 
@@ -35,14 +35,7 @@ public class Student : IReportable
         Subjects.AddRange(subjects);
     }
 
-    //public void Display()
-    //{
-    //    Console.WriteLine($"Student RollNo:{RollNo}, Name:{Name}, DateOfBirth:{DateOfBirth: dd-MMM-yyyy}");
-
-    //    Subjects.ForEach(s => s.Display());
-    //}
-
-    public static Student CreateFromConsoleRead(bool allowSubjectInput = true)
+    public static Student CreateFromConsoleRead(ISubjectCollection subjectCollection, bool allowSubjectInput = true)
     {
         var rollNo = ConsoleMessage.ReadLine<int>("Enter roll no");
         var name = ConsoleMessage.ReadLine<string>("Enter name");
@@ -52,7 +45,7 @@ public class Student : IReportable
 
         if (!allowSubjectInput) return student;
 
-        var subjects = ConsoleReadSubjects();
+        var subjects = ConsoleReadSubjects(subjectCollection);
 
         if (subjects.Any())
             student.AddSubjectRange(subjects);
@@ -60,16 +53,19 @@ public class Student : IReportable
         return student;
     }
 
-    private static List<Subject> ConsoleReadSubjects()
+    private static List<Subject> ConsoleReadSubjects(ISubjectCollection subjectCollection)
     {
         var subjects = new List<Subject>();
         var shouldAddSubject = ConsoleMessage.ReadLine<char>("Do you want to add a subject [y/n]");
 
         while (shouldAddSubject is 'y' or 'Y')
         {
-            var subject = Subject.CreateFromConsoleRead();
+            var subjectCode = ConsoleMessage.ReadLine<int>("Enter subject code to add");
 
-            subjects.Add(subject);
+            if(subjectCollection.TryGetStudent(subjectCode, out var subject)) 
+                subjects.Add(subject);
+            else
+                ConsoleMessage.ShowError($"Subject code {subjectCode} not found!");
 
             shouldAddSubject = ConsoleMessage.ReadLine<char>("Do you want to add another subject [y/n]");
         }
@@ -87,5 +83,4 @@ public class Student : IReportable
             return $"| {RollNo,-20} | {displayName,-30} | {DateOfBirth,-13:dd-MMM-yyyy} |";
         }
     }
-
 }

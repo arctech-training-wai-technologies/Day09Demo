@@ -1,4 +1,5 @@
-﻿using Day09Demo.AssignmentSample.Interfaces;
+﻿using Day09Demo.AssignmentSample.Exceptions;
+using Day09Demo.AssignmentSample.Interfaces;
 using Day09Demo.AssignmentSample.Utility;
 
 namespace Day09Demo.AssignmentSample.Models;
@@ -24,11 +25,6 @@ public class Subject : IReportable
         CourseFee = courseFee;
         StartDate = startDate;
     }
-
-    //public void Display()
-    //{
-    //    Console.WriteLine($"Subject Code: {Code}, Name: {Name}, Description: {Description}, Fees: {CourseFee}, StartDate: {StartDate}");
-    //}
 
     public static Subject CreateFromConsoleRead()
     {

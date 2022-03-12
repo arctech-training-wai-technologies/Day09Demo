@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Day09Demo.AssignmentSample.Exceptions;
 using Day09Demo.AssignmentSample.Utility;
 using Day09Demo.AssignmentSample.Models;
 
@@ -13,10 +14,22 @@ internal class StudentCollection
         _students.Add(student);
     }
 
-    public void AddStudent()
+    public Student AddStudent(SubjectCollection subjectCollection)
     {
-        var student = Student.CreateFromConsoleRead();
-        _students.Add(student);
+        ConsoleMessage.ShowFormTitle("A D D   N E W   S T U D E N T");
+
+        try
+        {
+            var student = Student.CreateFromConsoleRead(subjectCollection);
+            _students.Add(student);
+            return student;
+        }
+        catch (DuplicateRollNoException e)
+        {
+            ConsoleMessage.ShowError($"Roll no {e.RollNo} already exists");
+        }
+
+        return null;
     }
 
     public virtual void DisplayAll()
@@ -30,20 +43,17 @@ internal class StudentCollection
 
         var studentSearchText = ConsoleMessage.ReadLine<string>("Enter Name or Roll No to search");
 
-        Debug.Assert(studentSearchText != null, "studentSearchText != null");
-
-        int.TryParse(studentSearchText, out var codeEntered);
+        _ = int.TryParse(studentSearchText, out var codeEntered);
 
         var studentsFound = _students.Where(s => s.Name.Contains(studentSearchText) || s.RollNo == codeEntered).ToList();
 
-        //studentsFound.ForEach(s => s.Display());
         ShowReport(studentsFound, "S T U D E N T   S E A R C H   R E S U L T");
     }
 
     public void EditStudent()
     {
-        ConsoleMessage.ShowFormTitle("Subject Edit", 25);
-            
+        ConsoleMessage.ShowFormTitle("S T U D E N T   E D I T");
+
         var rollNo = ConsoleMessage.ReadLine<int>("Enter Roll No to update");
 
         var studentFound = _students.SingleOrDefault(s => s.RollNo == rollNo);
@@ -57,8 +67,8 @@ internal class StudentCollection
         ConsoleMessage.ShowSubTitle("Existing Student Data is");
         ConsoleReport.DisplaySingleRecordReport(Student.HeaderText, studentFound);
 
-        ConsoleMessage.ShowSubTitle("Enter new Subject Data:");
-        var newStudent = Student.CreateFromConsoleRead(false);
+        ConsoleMessage.ShowSubTitle("Enter new Student Data:");
+        var newStudent = Student.CreateFromConsoleRead(null, false);
 
         studentFound.RollNo = newStudent.RollNo;
         studentFound.Name = newStudent.Name;
@@ -71,7 +81,7 @@ internal class StudentCollection
     {
         var studentConsoleReport = new ConsoleReport(Student.HeaderText, 2);
         var subjectConsoleReport = new ConsoleReport(Subject.HeaderText, 7);
-        
+
         subjectConsoleReport.SetRecordColor(ConsoleColor.Green, ConsoleColor.DarkMagenta);
         subjectConsoleReport.SetHeaderColor(ConsoleColor.DarkMagenta, ConsoleColor.Blue);
 

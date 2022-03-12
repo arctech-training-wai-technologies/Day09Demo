@@ -1,4 +1,5 @@
 ﻿using Day09Demo.AssignmentSample.Interfaces;
+using Day09Demo.AssignmentSample.Utility;
 
 namespace Day09Demo.AssignmentSample;
 
@@ -34,8 +35,11 @@ public class Menu
     {            
         do
         {
+            Console.Clear();
             DisplayMenuText();
             WaitForMenuItemKeyPressed();
+
+            Console.Clear();
 
             switch (_selectedMenuItem)
             {
@@ -46,19 +50,19 @@ public class Menu
                     menuActions.EditStudent();
                     break;
                 case MenuItem.GetAnyStudent:
-                    menuActions.GetAnyStudent();
+                    menuActions.ShowAnyStudent();
                     break;
                 case MenuItem.GetAllStudents:
-                    menuActions.GetAllStudents();
+                    menuActions.ShowAllStudents();
                     break;
                 case MenuItem.AddSubject:
                     menuActions.AddSubject();
                     break;
                 case MenuItem.GetAnySubject:
-                    menuActions.GetAnySubject();
+                    menuActions.ShowAnySubject();
                     break;
                 case MenuItem.GetAllSubjects:
-                    menuActions.GetAllSubjects();
+                    menuActions.ShowAllSubjects();
                     break;
                 case MenuItem.EditSubject:
                     menuActions.EditSubject();
@@ -71,7 +75,10 @@ public class Menu
                     break;
                 case MenuItem.Exit:
                     return;
+                default:
+                    continue;
             }
+            ConsoleMessage.ShowPressAnyKey();
         } while (true);
     }
 

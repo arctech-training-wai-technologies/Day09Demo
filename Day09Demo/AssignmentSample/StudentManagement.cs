@@ -66,12 +66,12 @@ internal class StudentManagement : IMenuActions
         _subjects.Edit();
     }
 
-    public void GetAllSubjects()
+    public void ShowAllSubjects()
     {
         _subjects.DisplayAll();
     }
 
-    public void GetAnySubject()
+    public void ShowAnySubject()
     {
         _subjects.DisplayAny();
     }
@@ -81,12 +81,12 @@ internal class StudentManagement : IMenuActions
         _subjects.AddSubject();
     }
 
-    public void GetAllStudents()
+    public void ShowAllStudents()
     {
         _students.DisplayAll();
     }
 
-    public void GetAnyStudent()
+    public void ShowAnyStudent()
     {
         _students.DisplayAny();
     }
@@ -98,6 +98,6 @@ internal class StudentManagement : IMenuActions
 
     public void AddStudent()
     {
-        _students.AddStudent();
+        _students.AddStudent(_subjects);
     }        
 }

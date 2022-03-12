@@ -8,11 +8,11 @@ public interface IMenuActions
     void EditStudent();
     void EditSubject();
 
-    void GetAllStudents();
-    void GetAllSubjects();
+    void ShowAllStudents();
+    void ShowAllSubjects();
 
-    void GetAnyStudent();
-    void GetAnySubject();
+    void ShowAnyStudent();
+    void ShowAnySubject();
 
     void ShowStudentMarks();
 }

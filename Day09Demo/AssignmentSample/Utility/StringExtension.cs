@@ -4,10 +4,7 @@ public static class StringExtension
 {
     public static string Left(this string str, int size)
     {
-        if (str.Length <= size)
-            return str;
-
-        return str.Substring(0, 15);
+        return str.Length <= size ? str : str[..15];
     }
 
 }

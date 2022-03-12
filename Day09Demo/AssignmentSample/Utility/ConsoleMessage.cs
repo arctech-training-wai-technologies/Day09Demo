@@ -79,4 +79,10 @@ public static class ConsoleMessage
         offset.Adjust();
         Console.WriteLine(line);
     }
+
+    public static void ShowPressAnyKey()
+    {
+        Console.Write("Press any key to continue...");
+        Console.ReadKey(true);
+    }
 }
